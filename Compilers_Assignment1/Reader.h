@@ -86,49 +86,49 @@ enum READER_MODE {
 
 /* Offset declaration */
 typedef struct position {
-	sofia_intg mark;			/* the offset to the mark position (in chars) */
-	sofia_intg read;			/* the offset to the get a char position (in chars) */
-	sofia_intg wrte;			/* the offset to the add chars (in chars) */
+	ish_intg mark;			/* the offset to the mark position (in chars) */
+	ish_intg read;			/* the offset to the get a char position (in chars) */
+	ish_intg wrte;			/* the offset to the add chars (in chars) */
 } Position;
 
 /* Buffer structure */
 typedef struct bufferReader {
-	sofia_string	content;			/* pointer to the beginning of character array (character buffer) */
-	sofia_intg		size;				/* current dynamic memory size (in bytes) allocated to character buffer */
-	sofia_intg		increment;			/* character array increment factor */
-	sofia_intg		mode;				/* operational mode indicator */
-	sofia_byte		flags;				/* contains character array reallocation flag and end-of-buffer flag */
+	ish_thread	content;			/* pointer to the beginning of character array (character buffer) */
+	ish_intg		size;				/* current dynamic memory size (in bytes) allocated to character buffer */
+	ish_intg		increment;			/* character array increment factor */
+	ish_intg		mode;				/* operational mode indicator */
+	ish_byte		flags;				/* contains character array reallocation flag and end-of-buffer flag */
 	Position		position;				/* Offset / position field */
-	sofia_intg		histogram[NCHAR];	/* Statistics of chars */
-	sofia_intg		numReaderErrors;	/* Number of errors from Reader */
+	ish_intg		histogram[NCHAR];	/* Statistics of chars */
+	ish_intg		numReaderErrors;	/* Number of errors from Reader */
 } Buffer, *BufferPointer;
 
 /* FUNCTIONS DECLARATION:  .................................. */
 /* General Operations */
-BufferPointer	readerCreate		(sofia_intg, sofia_intg, sofia_intg);
-BufferPointer	readerAddChar		(BufferPointer const, sofia_char);
-sofia_boln		readerClear		    (BufferPointer const);
-sofia_boln		readerFree		    (BufferPointer const);
-sofia_boln		readerIsFull		(BufferPointer const);
-sofia_boln		readerIsEmpty		(BufferPointer const);
-sofia_boln		readerSetMark		(BufferPointer const, sofia_intg);
-sofia_intg		readerPrint		    (BufferPointer const);
-sofia_intg		readerLoad			(BufferPointer const, FILE* const);
-sofia_boln		readerRecover		(BufferPointer const);
-sofia_boln		readerRetract		(BufferPointer const);
-sofia_boln		readerRestore		(BufferPointer const);
-sofia_void		readerChecksum		(BufferPointer const);
+BufferPointer	readerCreate		(ish_intg, ish_intg, ish_intg);
+BufferPointer	readerAddChar		(BufferPointer const, ish_cha);
+ish_bool		readerClear		    (BufferPointer const);
+ish_bool		readerFree		    (BufferPointer const);
+ish_bool		readerIsFull		(BufferPointer const);
+ish_bool		readerIsEmpty		(BufferPointer const);
+ish_bool		readerSetMark		(BufferPointer const, ish_intg);
+ish_intg		readerPrint		    (BufferPointer const);
+ish_intg		readerLoad			(BufferPointer const, FILE* const);
+ish_bool		readerRecover		(BufferPointer const);
+ish_bool		readerRetract		(BufferPointer const);
+ish_bool		readerRestore		(BufferPointer const);
+ish_void		readerChecksum		(BufferPointer const);
 /* Getters */
-sofia_char		readerGetChar		(BufferPointer const);
-sofia_string	readerGetContent	(BufferPointer const, sofia_intg);
-sofia_intg		readerGetPosRead	(BufferPointer const);
-sofia_intg		readerGetPosWrte	(BufferPointer const);
-sofia_intg		readerGetPosMark	(BufferPointer const);
-sofia_intg		readerGetSize		(BufferPointer const);
-sofia_intg		readerGetInc		(BufferPointer const);
-sofia_intg		readerGetMode		(BufferPointer const);
-sofia_byte		readerGetFlags		(BufferPointer const);
-sofia_void		readerPrintStat		(BufferPointer const);
-sofia_intg		readerNumErrors		(BufferPointer const);
+ish_cha		readerGetChar		(BufferPointer const);
+ish_thread	readerGetContent	(BufferPointer const, ish_intg);
+ish_intg		readerGetPosRead	(BufferPointer const);
+ish_intg		readerGetPosWrte	(BufferPointer const);
+ish_intg		readerGetPosMark	(BufferPointer const);
+ish_intg		readerGetSize		(BufferPointer const);
+ish_intg		readerGetInc		(BufferPointer const);
+ish_intg		readerGetMode		(BufferPointer const);
+ish_byte		readerGetFlags		(BufferPointer const);
+ish_void		readerPrintStat		(BufferPointer const);
+ish_intg		readerNumErrors		(BufferPointer const);
 
 #endif
