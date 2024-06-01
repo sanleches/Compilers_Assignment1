@@ -79,35 +79,30 @@
 
 BufferPointer readerCreate(ish_intg size, ish_intg increment, ish_intg mode) {
 	BufferPointer readerPointer;
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Adjust the values according to parameters */
+	if (size < 0 || increment <= 0 || (mode != MODE_FIXED && mode != MODE_ADDIT && mode != MODE_MULTI)) {
+		return NULL; // Defensive programming
+	}
+
 	readerPointer = (BufferPointer)calloc(1, sizeof(Buffer));
 	if (!readerPointer)
 		return NULL;
 	readerPointer->content = (ish_thread)malloc(size);
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Initialize the histogram */
-	if (size != 0)
-		readerPointer->size = size;
-	else
-		readerPointer->size = READER_DEFAULT_SIZE;
-	if (increment!= 0)
-		readerPointer->increment = increment;
-	else
-		readerPointer->increment = READER_DEFAULT_INCREMENT;
-	if (mode == MODE_ADDIT || mode == MODE_FIXED || mode == MODE_MULTI)
-		readerPointer->increment = increment;
-	else
-		readerPointer->increment = MODE_FIXED;
-	/* TO_DO: Initialize flags */
-	/* TO_DO: The created flag must be signalized as EMP */
-	/* NEW: Cleaning the content */
-	if (readerPointer->content)
-		readerPointer->content[0] = READER_TERMINATOR;
+	if (!readerPointer->content) {
+		free(readerPointer);
+		return NULL;
+	}
+
+	readerPointer->size = size;
+	readerPointer->increment = increment;
+	readerPointer->mode = mode;
+
+	readerPointer->content[0] = READER_TERMINATOR;
 	readerPointer->position.wrte = 0;
 	readerPointer->position.mark = 0;
 	readerPointer->position.read = 0;
 	return readerPointer;
+
+	//FUNCTION implemented by santiago
 }
 
 
