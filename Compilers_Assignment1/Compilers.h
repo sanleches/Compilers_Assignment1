@@ -2,7 +2,7 @@
 ************************************************************
 * COMPILERS COURSE - Algonquin College
 * Code version: Summer, 2024
-* Author: BY Santiago Ugarte & Isha Gadani 
+* Author: BY Santiago Ugarte(041090461) & Isha Gadani(041085940) 
 * Professors: Paulo Sousa
 ************************************************************
 						"\t=------------------------------------------------------=\n"
