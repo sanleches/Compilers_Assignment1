@@ -99,7 +99,7 @@ enum READER_MODE {
 
 /* STRUCTURES DEFINITION: SUFIXED BY LANGUAGE NAME (SOFIA) .................................. */
 
-/* DONE: Adjust datatypes */
+/* DONE: Adjust datatypes - DONE by SAntiago */
 
 /* Offset declaration */
 typedef struct position {
