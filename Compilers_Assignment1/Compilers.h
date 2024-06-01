@@ -38,17 +38,20 @@
 
 // Data type typedefs for Ish language
 
+//BASE DATATYPES
 typedef int             ish_intg;       // Integer data type
 typedef float           ish_flop;       // Floating point data type
 typedef char*           ish_thread;     // String data type
 typedef char            ish_cha;        // Character data type
 typedef unsigned char   ish_bool;       // Boolean data type
-
+//ADDITIONAL DATATYPES
 typedef float           ish_real;       // Floating point data type
 typedef void            ish_void;       // Void data type
 typedef long            ish_long;       // Long integer data type
 typedef double          ish_doub;       // Double precision floating point data type
 typedef unsigned char   ish_byte;       // Byte data type
+//SPECIFIC DATATYPES
+// PENDING 
 
 // Size and range definitions for Ish data types
 #define ISH_NUMI_SIZE   4
@@ -60,10 +63,6 @@ typedef unsigned char   ish_byte;       // Byte data type
 
 // String size is variable and limited by memory
 // Char size is variable (usually 1 byte) and limited to ASCII range
-
-#define ISH_BOOL_SIZE   1
-#define ISH_BOOL_TRUE   1
-#define ISH_BOOL_FALSE  0
 
 #define ISH_LONINT_SIZE 8
 #define ISH_LONINT_MIN  (-9223372036854775808LL)
