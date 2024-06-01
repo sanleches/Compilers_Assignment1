@@ -8,27 +8,7 @@
 #
 # ECHO "=---------------------------------------="
 # ECHO "|  COMPILERS - ALGONQUIN COLLEGE (S24)  |"
-# ECHO "=---------------------------------------="
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@           %&@@@@@@@@@@@     @@    ”
-# ECHO "    @@       @%% (@@@@@@@@@  @     @@    ”
-# ECHO "    @@      @& @   @ @       @     @@    ”
-# ECHO "    @@     @ @ %  / /   @@@@@@     @@    ”
-# ECHO "    @@      & @ @  @@              @@    ”
-# ECHO "    @@       @/ @*@ @ @   @        @@    ”
-# ECHO "    @@           @@@@  @@ @ @      @@    ”
-# ECHO "    @@            /@@    @@@ @     @@    ”
-# ECHO "    @@     @      / /     @@ @     @@    ”
-# ECHO "    @@     @ @@   /@/   @@@ @      @@    ”
-# ECHO "    @@     @@@@@@@@@@@@@@@         @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@         S O F I A           @@    ”
-# ECHO "    @@                             @@    ”
-# ECHO "    @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    ”
-# ECHO "                                         "
-# ECHO "[READER SCRIPT .........................]"
-# ECHO "                                         "
+# ECHO "=---------------------------------------="                                        "
 */
 
 /*
@@ -46,74 +26,62 @@
 #ifndef COMPILERS_H_
 #define COMPILERS_H_
 
+// Debug mode flag
 #define DEBUG 0
 
-/*
- * ............................................................................
- * ADVICE 1:
- * Please check the "TODO" labels to develop your activity.
- *
- * ADVICE 2: This file must be updated according to each assignment
- * (see the progression: reader > scanner > parser).
- * ............................................................................
- */
+// Language name
+#define STR_LANGNAME    "Ish"
 
-/* TO_DO: Adjust your language (cannot be "Sofia") */
+// Logical constants
+#define ISH_TRUE  1
+#define ISH_FALSE 0
 
-/* Language name */
-#define STR_LANGNAME	"Sofia"
+// Data type typedefs for Ish language
 
-/* Logical constants - adapt for your language */
-#define SOFIA_TRUE  1
-#define SOFIA_FALSE 0
+typedef int             ish_intg;       // Integer data type
+typedef float           ish_flop;       // Floating point data type
+typedef char*           ish_thread;     // String data type
+typedef char            ish_cha;        // Character data type
+typedef unsigned char   ish_bool;       // Boolean data type
 
-/*
-------------------------------------------------------------
-Data types definitions
-NOTE: Some types may not be directly used by your language,
-		but they can be necessary for conversions.
-------------------------------------------------------------
-*/
+typedef float           ish_real;       // Floating point data type
+typedef void            ish_void;       // Void data type
+typedef long            ish_long;       // Long integer data type
+typedef double          ish_doub;       // Double precision floating point data type
+typedef unsigned char   ish_byte;       // Byte data type
 
+// Size and range definitions for Ish data types
+#define ISH_NUMI_SIZE   4
+#define ISH_NUMI_MIN    (-2147483648)
+#define ISH_NUMI_MAX    2147483647
 
-/* TO_DO: Define your typedefs */
-typedef char			sofia_char;
-typedef char*			sofia_string;
-typedef int				sofia_intg;
-typedef float			sofia_real;
-typedef void			sofia_void;
+#define ISH_FLOP_SIZE   4
+// Floating point range: Approximately ±3.4E-38 to ±3.4E+38
 
-typedef unsigned char	sofia_boln;
-typedef unsigned char	sofia_byte;
+// String size is variable and limited by memory
+// Char size is variable (usually 1 byte) and limited to ASCII range
 
-typedef long			sofia_long;
-typedef double			sofia_doub;
+#define ISH_BOOL_SIZE   1
+#define ISH_BOOL_TRUE   1
+#define ISH_BOOL_FALSE  0
 
-/*
-------------------------------------------------------------
-Programs:
-1: Reader - invokes MainReader code
-2: Scanner - invokes MainScanner code
-3: Parser - invokes MainParser code
-------------------------------------------------------------
-*/
+#define ISH_LONINT_SIZE 8
+#define ISH_LONINT_MIN  (-9223372036854775808LL)
+#define ISH_LONINT_MAX  9223372036854775807LL
+
+// Programs
 enum PROGRAMS {
-	PGM_READER	= 'r',
-	PGM_SCANNER = 's',
-	PGM_PARSER	= 'p'
+    PGM_READER = 'r',  // Reader program
+    PGM_SCANNER = 's',  // Scanner program
+    PGM_PARSER = 'p'   // Parser program
 };
 
-/*
-------------------------------------------------------------
-Main functions signatures
-(Code will be updated during next assignments)
-------------------------------------------------------------
-*/
-sofia_intg mainReader(sofia_intg argc, sofia_string* argv);
+// Function signatures
+ish_intg mainReader(ish_intg argc, ish_thread* argv);   // Main function for the Reader program
+ish_intg mainScanner(ish_intg argc, ish_thread* argv);  // Main function for the Scanner program
+ish_intg mainParser(ish_intg argc, ish_thread* argv);   // Main function for the Parser program
 
-/* 
-TO_DO: Include later mainScaner (A22) and mainParser (A32)
-*/
-sofia_void printLogo();
+// Function to print logo
+ish_void printLogo();
 
 #endif
