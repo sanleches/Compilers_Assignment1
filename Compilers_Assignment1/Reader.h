@@ -144,7 +144,7 @@ ish_intg		readerGetSize(BufferPointer const);
 ish_intg		readerGetInc(BufferPointer const);
 ish_intg		readerGetMode(BufferPointer const);
 ish_byte		readerGetFlags(BufferPointer const);
-ish_void		readerPrintStat(BufferPointer const);
+ish_bool		readerPrintStat(BufferPointer const);
 ish_intg		readerNumErrors(BufferPointer const);
 
 #endif
