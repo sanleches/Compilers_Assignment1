@@ -95,14 +95,13 @@ BufferPointer readerCreate(ish_intg size, ish_intg increment, ish_intg mode) {
 	readerPointer->size = size;
 	readerPointer->increment = increment;
 	readerPointer->mode = mode;
+	readerPointer->flags = FLAG_EMP;
 
 	readerPointer->content[0] = READER_TERMINATOR;
 	readerPointer->position.wrte = 0;
 	readerPointer->position.mark = 0;
 	readerPointer->position.read = 0;
 	return readerPointer;
-
-	//FUNCTION implemented by santiago
 }
 
 
@@ -123,36 +122,21 @@ BufferPointer readerCreate(ish_intg size, ish_intg increment, ish_intg mode) {
 */
 
 BufferPointer readerAddChar(BufferPointer const readerPointer, ish_cha ch) {
-	ish_thread tempReader = NULL;
-	ish_intg newSize = 0;
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Reset Realocation */
-	/* TO_DO: Test the inclusion of chars */
-	if (readerPointer->position.wrte * (ish_intg)sizeof(ish_cha) < readerPointer->size) {
-		/* TO_DO: This buffer is NOT full */
-	} else {
-		/* TO_DO: Reset Full flag */
-		switch (readerPointer->mode) {
-		case MODE_FIXED:
-			return NULL;
-		case MODE_ADDIT:
-			/* TO_DO: Adjust new size */
-			/* TO_DO: Defensive programming */
-			break;
-		case MODE_MULTI:
-			/* TO_DO: Adjust new size */
-			/* TO_DO: Defensive programming */
-			break;
-		default:
-			return NULL;
-		}
-		/* TO_DO: New reader allocation */
-		/* TO_DO: Defensive programming */
-		/* TO_DO: Check Relocation */
+	if (!readerPointer || readerIsFull(readerPointer)) {
+		return NULL; // Defensive programming
 	}
-	/* TO_DO: Add the char */
+
+	if (readerPointer->position.wrte * sizeof(ish_cha) >= readerPointer->size) {
+		ish_intg newSize = readerPointer->size + readerPointer->increment;
+		ish_thread tempReader = (ish_thread)realloc(readerPointer->content, newSize);
+		if (!tempReader) {
+			return NULL; // Defensive programming
+		}
+		readerPointer->content = tempReader;
+		readerPointer->size = newSize;
+	}
+
 	readerPointer->content[readerPointer->position.wrte++] = ch;
-	/* TO_DO: Updates histogram */
 	return readerPointer;
 }
 
@@ -171,9 +155,14 @@ BufferPointer readerAddChar(BufferPointer const readerPointer, ish_cha ch) {
 *************************************************************
 */
 ish_bool readerClear(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Adjust flags original */
-	readerPointer->position.wrte = readerPointer->position.mark = readerPointer->position.read = 0;
+	if (!readerPointer) {
+		return ISH_FALSE; // Defensive programming
+	}
+
+	readerPointer->position.wrte = 0;
+	readerPointer->position.mark = 0;
+	readerPointer->position.read = 0;
+	readerPointer->flags = FLAG_EMP;
 	return ISH_TRUE;
 }
 
@@ -192,8 +181,14 @@ ish_bool readerClear(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_bool readerFree(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Free pointers */
+	if (!readerPointer) {
+		return ISH_FALSE; // Defensive programming
+	}
+
+	if (readerPointer->content) {
+		free(readerPointer->content);
+	}
+	free(readerPointer);
 	return ISH_TRUE;
 }
 
@@ -212,9 +207,11 @@ ish_bool readerFree(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_bool readerIsFull(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Check flag if buffer is FUL */
-	return ISH_TRUE;
+	if (!readerPointer) {
+		return ISH_FALSE; // Defensive programming
+	}
+
+	return (readerPointer->position.wrte * sizeof(ish_cha) >= readerPointer->size);
 }
 
 
@@ -233,9 +230,11 @@ ish_bool readerIsFull(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_bool readerIsEmpty(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Check flag if buffer is EMP */
-	return ISH_TRUE;
+	if (!readerPointer) {
+		return ISH_FALSE; // Defensive programming
+	}
+
+	return (readerPointer->position.wrte == 0);
 }
 
 /*
@@ -254,8 +253,10 @@ ish_bool readerIsEmpty(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_bool readerSetMark(BufferPointer const readerPointer, ish_intg mark) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Adjust mark */
+	if (!readerPointer || mark < 0 || mark > readerPointer->position.wrte) {
+		return ISH_FALSE; // Defensive programming
+	}
+
 	readerPointer->position.mark = mark;
 	return ISH_TRUE;
 }
