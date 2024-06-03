@@ -88,10 +88,10 @@ enum READER_MODE {
 /* BITS                                (7654.3210) */
 #define READER_DEFAULT_FLAG 0x00 	/* (0000.0000)_2 = (000)_10 */
 
-/* TO_DO: BIT 3: END = End of buffer flag */
-/* TO_DO: BIT 2: REL = Rellocation memory flag */
-/* TO_DO: BIT 2: EMP = Buffer empty flag */
-/* TO_DO: BIT 0: FUL = Buffer full flag */
+#define FLAG_EMP 0x01  // Bit 0: Buffer empty flag (0000.0001)_2
+#define FLAG_FUL 0x02  // Bit 1: Buffer full flag (0000.0010)_2
+#define FLAG_REL 0x04  // Bit 2: Reallocation memory flag (0000.0100)_2
+#define FLAG_END 0x08  // Bit 3: End of buffer flag (0000.1000)_2
 
 #define NCHAR				128			/* Chars from 0 to 127 */
 
@@ -118,34 +118,34 @@ typedef struct bufferReader {
 	Position		position;				/* Offset / position field */
 	ish_intg		histogram[NCHAR];	/* Statistics of chars */
 	ish_intg		numReaderErrors;	/* Number of errors from Reader */
-} Buffer, *BufferPointer;
+} Buffer, * BufferPointer;
 
 /* FUNCTIONS DECLARATION:  .................................. */
 /* General Operations */
-BufferPointer	readerCreate		(ish_intg, ish_intg, ish_intg);
-BufferPointer	readerAddChar		(BufferPointer const, ish_cha);
-ish_bool		readerClear		    (BufferPointer const);
-ish_bool		readerFree		    (BufferPointer const);
-ish_bool		readerIsFull		(BufferPointer const);
-ish_bool		readerIsEmpty		(BufferPointer const);
-ish_bool		readerSetMark		(BufferPointer const, ish_intg);
-ish_intg		readerPrint		    (BufferPointer const);
-ish_intg		readerLoad			(BufferPointer const, FILE* const);
-ish_bool		readerRecover		(BufferPointer const);
-ish_bool		readerRetract		(BufferPointer const);
-ish_bool		readerRestore		(BufferPointer const);
-ish_void		readerChecksum		(BufferPointer const);
+BufferPointer	readerCreate(ish_intg, ish_intg, ish_intg);
+BufferPointer	readerAddChar(BufferPointer const, ish_cha);
+ish_bool		readerClear(BufferPointer const);
+ish_bool		readerFree(BufferPointer const);
+ish_bool		readerIsFull(BufferPointer const);
+ish_bool		readerIsEmpty(BufferPointer const);
+ish_bool		readerSetMark(BufferPointer const, ish_intg);
+ish_intg		readerPrint(BufferPointer const);
+ish_intg		readerLoad(BufferPointer const, FILE* const);
+ish_bool		readerRecover(BufferPointer const);
+ish_bool		readerRetract(BufferPointer const);
+ish_bool		readerRestore(BufferPointer const);
+ish_void		readerChecksum(BufferPointer const);
 /* Getters */
-ish_cha		readerGetChar		(BufferPointer const);
-ish_thread	readerGetContent	(BufferPointer const, ish_intg);
-ish_intg		readerGetPosRead	(BufferPointer const);
-ish_intg		readerGetPosWrte	(BufferPointer const);
-ish_intg		readerGetPosMark	(BufferPointer const);
-ish_intg		readerGetSize		(BufferPointer const);
-ish_intg		readerGetInc		(BufferPointer const);
-ish_intg		readerGetMode		(BufferPointer const);
-ish_byte		readerGetFlags		(BufferPointer const);
-ish_void		readerPrintStat		(BufferPointer const);
-ish_intg		readerNumErrors		(BufferPointer const);
+ish_cha		    readerGetChar(BufferPointer const);
+ish_thread	    readerGetContent(BufferPointer const, ish_intg);
+ish_intg		readerGetPosRead(BufferPointer const);
+ish_intg		readerGetPosWrte(BufferPointer const);
+ish_intg		readerGetPosMark(BufferPointer const);
+ish_intg		readerGetSize(BufferPointer const);
+ish_intg		readerGetInc(BufferPointer const);
+ish_intg		readerGetMode(BufferPointer const);
+ish_byte		readerGetFlags(BufferPointer const);
+ish_void		readerPrintStat(BufferPointer const);
+ish_intg		readerNumErrors(BufferPointer const);
 
 #endif
