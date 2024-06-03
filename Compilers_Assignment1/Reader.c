@@ -276,12 +276,15 @@ ish_bool readerSetMark(BufferPointer const readerPointer, ish_intg mark) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
+
 ish_intg readerPrint(BufferPointer const readerPointer) {
+	if (!readerPointer || readerIsEmpty(readerPointer)) {
+		return 0; // Defensive programming
+	}
+
 	ish_intg cont = 0;
-	ish_cha c;
-	/* TO_DO: Defensive programming (including invalid chars) */
-	c = readerGetChar(readerPointer);
-	/* TO_DO: Check flag if buffer EOB has achieved */
+	ish_cha c = readerGetChar(readerPointer);
+
 	while (cont < readerPointer->position.wrte) {
 		cont++;
 		printf("%c", c);
@@ -307,19 +310,21 @@ ish_intg readerPrint(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_intg readerLoad(BufferPointer const readerPointer, FILE* const fileDescriptor) {
+	if (!readerPointer || !fileDescriptor) {
+		return READER_ERROR; // Defensive programming
+	}
+
 	ish_intg size = 0;
-	ish_cha c;
-	/* TO_DO: Defensive programming */
-	c = (ish_cha)fgetc(fileDescriptor);
+	ish_cha c = (ish_cha)fgetc(fileDescriptor);
+
 	while (!feof(fileDescriptor)) {
 		if (!readerAddChar(readerPointer, c)) {
 			ungetc(c, fileDescriptor);
 			return READER_ERROR;
 		}
-		c = (char)fgetc(fileDescriptor);
+		c = (ish_cha)fgetc(fileDescriptor);
 		size++;
 	}
-	/* TO_DO: Defensive programming */
 	return size;
 }
 
@@ -339,8 +344,10 @@ ish_intg readerLoad(BufferPointer const readerPointer, FILE* const fileDescripto
 *************************************************************
 */
 ish_bool readerRecover(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Recover positions */
+	if (!readerPointer) {
+		return ISH_FALSE; // Defensive programming
+	}
+
 	readerPointer->position.read = 0;
 	return ISH_TRUE;
 }
@@ -361,8 +368,11 @@ ish_bool readerRecover(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_bool readerRetract(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Retract (return 1 pos read) */
+	if (!readerPointer || readerPointer->position.read <= 0) {
+		return ISH_FALSE; // Defensive programming
+	}
+
+	readerPointer->position.read--;
 	return ISH_TRUE;
 }
 
@@ -382,8 +392,10 @@ ish_bool readerRetract(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_bool readerRestore(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Restore positions (read/mark) */
+	if (!readerPointer) {
+		return ISH_FALSE; // Defensive programming
+	}
+
 	readerPointer->position.read = readerPointer->position.mark;
 	return ISH_TRUE;
 }
@@ -404,13 +416,11 @@ ish_bool readerRestore(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_cha readerGetChar(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Check condition to read/wrte */
-	/* TO_DO: Set EOB flag */
-	/* TO_DO: Reset EOB flag */
-	if (readerPointer->position.wrte>0)
-		return readerPointer->content[readerPointer->position.read++];
-	return READER_TERMINATOR;
+	if (!readerPointer || readerPointer->position.read >= readerPointer->position.wrte) {
+		return READER_TERMINATOR; // Defensive programming
+	}
+
+	return readerPointer->content[readerPointer->position.read++];
 }
 
 
@@ -430,9 +440,11 @@ ish_cha readerGetChar(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_thread readerGetContent(BufferPointer const readerPointer, ish_intg pos) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Return content (string) */
-	return readerPointer->content + pos;;
+	if (!readerPointer || pos < 0 || pos >= readerPointer->position.wrte) {
+		return NULL; // Defensive programming
+	}
+
+	return readerPointer->content + pos;
 }
 
 
@@ -452,8 +464,10 @@ ish_thread readerGetContent(BufferPointer const readerPointer, ish_intg pos) {
 *************************************************************
 */
 ish_intg readerGetPosRead(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Return read */
+	if (!readerPointer) {
+		return READER_ERROR; // Defensive programming
+	}
+
 	return readerPointer->position.read;
 }
 
@@ -473,9 +487,11 @@ ish_intg readerGetPosRead(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_intg readerGetPosWrte(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Return wrte */
-	return 0;
+	if (!readerPointer) {
+		return READER_ERROR; // Defensive programming
+	}
+
+	return readerPointer->position.wrte;
 }
 
 
@@ -494,9 +510,11 @@ ish_intg readerGetPosWrte(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_intg readerGetPosMark(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Return mark */
-	return 0;
+	if (!readerPointer) {
+		return READER_ERROR; // Defensive programming
+	}
+
+	return readerPointer->position.mark;
 }
 
 
@@ -515,9 +533,11 @@ ish_intg readerGetPosMark(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_intg readerGetSize(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Return size */
-	return 0;
+	if (!readerPointer) {
+		return READER_ERROR; // Defensive programming
+	}
+
+	return readerPointer->size;
 }
 
 /*
@@ -535,9 +555,11 @@ ish_intg readerGetSize(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_intg readerGetInc(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Return increment */
-	return 0;
+	if (!readerPointer) {
+		return READER_ERROR; // Defensive programming
+	}
+
+	return readerPointer->increment;
 }
 
 /*
@@ -555,9 +577,11 @@ ish_intg readerGetInc(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_intg readerGetMode(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Return mode */
-	return 0;
+	if (!readerPointer) {
+		return READER_ERROR; // Defensive programming
+	}
+
+	return readerPointer->mode;
 }
 
 
@@ -576,9 +600,11 @@ ish_intg readerGetMode(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_byte readerGetFlags(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Return flags */
-	return 0;
+	if (!readerPointer) {
+		return 0; // Defensive programming
+	}
+
+	return readerPointer->flags;
 }
 
 
@@ -596,8 +622,23 @@ ish_byte readerGetFlags(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_void readerPrintStat(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Print the histogram */
+	if (!readerPointer) {
+		return; // Defensive programming
+	}
+
+	// Example histogram, you may adjust according to your language's requirements
+	ish_intg histogram[256] = { 0 }; // Assuming 256 different characters in your language
+
+	for (ish_intg i = 0; i < readerPointer->position.wrte; i++) {
+		histogram[(unsigned char)readerPointer->content[i]]++;
+	}
+
+	printf("Character Statistics:\n");
+	for (ish_intg i = 0; i < 256; i++) {
+		if (histogram[i] > 0) {
+			printf("%c: %d\n", i, histogram[i]);
+		}
+	}
 }
 
 /*
@@ -614,9 +655,21 @@ ish_void readerPrintStat(BufferPointer const readerPointer) {
 *************************************************************
 */
 ish_intg readerNumErrors(BufferPointer const readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Returns the number of errors */
-	return 0;
+	if (!readerPointer) {
+		return 0; // Defensive programming
+	}
+
+	// Example error counting logic, adjust according to your language's requirements
+	ish_intg errorCount = 0;
+
+	for (ish_intg i = 0; i < readerPointer->position.wrte; i++) {
+		// Assuming '!' indicates an error character, you may adjust as needed
+		if (readerPointer->content[i] == '!') {
+			errorCount++;
+		}
+	}
+
+	return errorCount;
 }
 
 /*
@@ -635,7 +688,39 @@ ish_intg readerNumErrors(BufferPointer const readerPointer) {
 */
 
 ish_void readerChecksum(BufferPointer readerPointer) {
-	/* TO_DO: Defensive programming */
-	/* TO_DO: Adjust the checksum to flags */
+	if (!readerPointer) {
+		return; // Defensive programming
+	}
+
+	// Example checksum calculation logic
+	ish_byte checksum = 0;
+
+	for (ish_intg i = 0; i < readerPointer->position.wrte; i++) {
+		checksum ^= readerPointer->content[i]; // XOR all characters
+	}
+
+	checksum &= 0x0F; // Only keep the lowest 4 bits
+	readerPointer->flags = (readerPointer->flags & 0xF0) | checksum; // Update the lowest 4 bits in flags
+
 	return;
+}
+
+/*
+***********************************************************
+* Function name: readerRewind
+* Purpose: Rewinds the buffer. ADDITIONAL TO ORIGINAL DOCUMENT
+* Parameters:
+*   readerPointer = pointer to Buffer Reader
+* Return value
+*	Boolean value about operation success
+*************************************************************
+*/
+
+ish_bool readerRewind(BufferPointer const readerPointer) {
+	if (!readerPointer) {
+		return ISH_FALSE; // Defensive programming
+	}
+
+	readerPointer->position.read = 0;
+	return ISH_TRUE;
 }
