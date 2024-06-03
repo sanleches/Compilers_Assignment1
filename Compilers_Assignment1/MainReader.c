@@ -83,18 +83,16 @@
  * (see "Compilers.h")
  */
 
-/*
- * -------------------------------------------------------------
- *  Function declarations
- * -------------------------------------------------------------
- */
-
-
+ /*
+  * -------------------------------------------------------------
+  *  Function declarations
+  * -------------------------------------------------------------
+  */
 ish_void bErrorPrint(ish_thread fmt, ...);
 ish_void displayBuffer(Buffer* ptr_Buffer);
 ish_long getFileSize(ish_thread fname);
 ish_intg isNumber(const ish_thread ns);
-ish_void startReader(ish_thread, ish_thread, ish_cha, ish_intg, ish_intg);
+ish_void startReader(ish_thread program, ish_thread input, ish_cha mode, ish_intg size, ish_intg increment);
 
 /*
 ************************************************************
@@ -107,7 +105,6 @@ ish_void startReader(ish_thread, ish_thread, ish_cha, ish_intg, ish_intg);
 */
 
 ish_intg mainReader(ish_intg argc, ish_thread* argv) {
-
 	/* Create source input buffer */
 	ish_thread program = argv[0];
 	ish_thread input = argv[2];
@@ -136,8 +133,8 @@ ish_intg mainReader(ish_intg argc, ish_thread* argv) {
 	/* Read additional parameters, if any */
 	if (argc == 6) {
 		mode = *argv[3];
-		if (isNumber(argv[4]))size = (short)atoi(argv[4]); else wrongNumber = 1;
-		if (isNumber(argv[5]))increment = (short)atoi(argv[5]); else wrongNumber = 1;
+		if (isNumber(argv[4])) size = (short)atoi(argv[4]); else wrongNumber = 1;
+		if (isNumber(argv[5])) increment = (short)atoi(argv[5]); else wrongNumber = 1;
 		if (wrongNumber) {
 			bErrorPrint("\nDate: %s  Time: %s", __DATE__, __TIME__);
 			bErrorPrint("\nRuntime error at line %d in file %s\n", __LINE__, __FILE__);
@@ -165,11 +162,10 @@ ish_intg mainReader(ish_intg argc, ish_thread* argv) {
 ************************************************************
 */
 ish_void startReader(ish_thread program, ish_thread input, ish_cha mode, ish_intg size, ish_intg increment) {
-
 	BufferPointer bufferp;		/* pointer to Buffer structure */
 	FILE* fileHandler;			/* input file handle */
 	ish_intg loadSize = 0;		/* the size of the file loaded in the buffer */
-	ish_cha symbol;			/* symbol read from input file */
+	ish_cha symbol;				/* symbol read from input file */
 
 	/* Create buffer */
 	bufferp = readerCreate(size, (char)increment, mode);
@@ -178,13 +174,13 @@ ish_void startReader(ish_thread program, ish_thread input, ish_cha mode, ish_int
 		bErrorPrint("%s%s", program,
 			": Cannot allocate buffer - Use: buffer <input> <mode> <size> <increment>.");
 		bErrorPrint("Filename: %s %c %d %d\n", input, mode, size, increment);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 
 	/* Open source file */
 	if ((fileHandler = fopen(input, "r")) == NULL) {
 		bErrorPrint("%s%s%s", program, ": Cannot open file: ", input);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 
 	/* Load source file into input buffer  */
@@ -293,22 +289,15 @@ ish_intg isNumber(const ish_thread ns) {
 
 ish_void displayBuffer(Buffer* ptr_Buffer) {
 	printf("\nPrinting buffer parameters:\n\n");
-	printf("The capacity of the buffer is:  %d\n",
-		readerGetSize(ptr_Buffer));
-	printf("The current size of the buffer is:  %d\n",
-		readerGetPosWrte(ptr_Buffer));
-	printf("The operational mode of the buffer is: %c\n",
-		readerGetMode(ptr_Buffer));
-	printf("The increment factor of the buffer is:  %lu\n",
-		readerGetInc(ptr_Buffer));
-	printf("The first symbol in the buffer is:  %c\n",
-		readerGetPosWrte(ptr_Buffer) ? *readerGetContent(ptr_Buffer, 0) : ' ');
-	printf("The value of the flags field is: %02hX\n",
-		readerGetFlags(ptr_Buffer));
+	printf("The capacity of the buffer is:  %d\n", readerGetSize(ptr_Buffer));
+	printf("The current size of the buffer is:  %d\n", readerGetPosWrte(ptr_Buffer));
+	printf("The operational mode of the buffer is: %c\n", readerGetMode(ptr_Buffer));
+	printf("The increment factor of the buffer is:  %lu\n", readerGetInc(ptr_Buffer));
+	printf("The first symbol in the buffer is:  %c\n", readerGetPosWrte(ptr_Buffer) ? *readerGetContent(ptr_Buffer, 0) : ' ');
+	printf("The value of the flags field is: %02hX\n", readerGetFlags(ptr_Buffer));
 	printf("%s", "Reader statistics : \n");
 	readerPrintStat(ptr_Buffer);
-	printf("Number of errors: %d\n",
-		readerNumErrors(ptr_Buffer));
+	printf("Number of errors: %d\n", readerNumErrors(ptr_Buffer));
 	printf("\nPrinting buffer contents:\n\n");
 	readerRecover(ptr_Buffer);
 	if (!readerPrint(ptr_Buffer))
