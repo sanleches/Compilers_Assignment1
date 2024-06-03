@@ -76,7 +76,6 @@
 *	- Check flags.
 *************************************************************
 */
-
 BufferPointer readerCreate(ish_intg size, ish_intg increment, ish_intg mode) {
 	BufferPointer readerPointer;
 	if (size < 0 || increment <= 0 || (mode != MODE_FIXED && mode != MODE_ADDIT && mode != MODE_MULTI)) {
@@ -84,8 +83,8 @@ BufferPointer readerCreate(ish_intg size, ish_intg increment, ish_intg mode) {
 	}
 
 	readerPointer = (BufferPointer)calloc(1, sizeof(Buffer));
-	if (!readerPointer)
-		return NULL;
+	if (!readerPointer) return NULL;
+
 	readerPointer->content = (ish_thread)malloc(size);
 	if (!readerPointer->content) {
 		free(readerPointer);
@@ -137,6 +136,7 @@ BufferPointer readerAddChar(BufferPointer const readerPointer, ish_cha ch) {
 	}
 
 	readerPointer->content[readerPointer->position.wrte++] = ch;
+	readerPointer->flags &= ~FLAG_EMP; // Clear the empty flag
 	return readerPointer;
 }
 
@@ -162,7 +162,7 @@ ish_bool readerClear(BufferPointer const readerPointer) {
 	readerPointer->position.wrte = 0;
 	readerPointer->position.mark = 0;
 	readerPointer->position.read = 0;
-	readerPointer->flags = FLAG_EMP;
+	readerPointer->flags = FLAG_EMP; // Set the empty flag
 	return ISH_TRUE;
 }
 
@@ -439,7 +439,7 @@ ish_cha readerGetChar(BufferPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-ish_thread readerGetContent(BufferPointer const readerPointer, ish_intg pos) {
+ish_cha* readerGetContent(BufferPointer const readerPointer, ish_intg pos) {
 	if (!readerPointer || pos < 0 || pos >= readerPointer->position.wrte) {
 		return NULL; // Defensive programming
 	}
@@ -621,24 +621,19 @@ ish_byte readerGetFlags(BufferPointer const readerPointer) {
 *	- Adjust for your LANGUAGE.
 *************************************************************
 */
-ish_void readerPrintStat(BufferPointer const readerPointer) {
+ish_bool readerPrintStat(BufferPointer const readerPointer) {
 	if (!readerPointer) {
-		return; // Defensive programming
+		return ISH_FALSE; // Defensive programming
 	}
 
-	// Example histogram, you may adjust according to your language's requirements
-	ish_intg histogram[256] = { 0 }; // Assuming 256 different characters in your language
-
-	for (ish_intg i = 0; i < readerPointer->position.wrte; i++) {
-		histogram[(unsigned char)readerPointer->content[i]]++;
-	}
-
-	printf("Character Statistics:\n");
-	for (ish_intg i = 0; i < 256; i++) {
-		if (histogram[i] > 0) {
-			printf("%c: %d\n", i, histogram[i]);
-		}
-	}
+	printf("Printing buffer statistics:\n");
+	printf("Write position: %d\n", readerPointer->position.wrte);
+	printf("Read position: %d\n", readerPointer->position.read);
+	printf("Mark position: %d\n", readerPointer->position.mark);
+	printf("Size: %d\n", readerPointer->size);
+	printf("Increment: %d\n", readerPointer->increment);
+	printf("Mode: %d\n", readerPointer->mode);
+	return ISH_TRUE;
 }
 
 /*
@@ -656,20 +651,10 @@ ish_void readerPrintStat(BufferPointer const readerPointer) {
 */
 ish_intg readerNumErrors(BufferPointer const readerPointer) {
 	if (!readerPointer) {
-		return 0; // Defensive programming
+		return READER_ERROR; // Defensive programming
 	}
 
-	// Example error counting logic, adjust according to your language's requirements
-	ish_intg errorCount = 0;
-
-	for (ish_intg i = 0; i < readerPointer->position.wrte; i++) {
-		// Assuming '!' indicates an error character, you may adjust as needed
-		if (readerPointer->content[i] == '!') {
-			errorCount++;
-		}
-	}
-
-	return errorCount;
+	return readerPointer->numReaderErrors;
 }
 
 /*
@@ -722,5 +707,24 @@ ish_bool readerRewind(BufferPointer const readerPointer) {
 	}
 
 	readerPointer->position.read = 0;
+	return ISH_TRUE;
+}
+
+/*
+***********************************************************
+* Function name: readerReset
+* Purpose: Resets the buffer. ADDITIONAL
+* Parameters:
+*   readerPointer = pointer to Buffer Reader
+* Return value:
+*	Boolean value about operation success
+*************************************************************
+*/
+ish_bool readerReset(BufferPointer const readerPointer) {
+	if (!readerPointer) {
+		return ISH_FALSE; // Defensive programming
+	}
+
+	readerPointer->position.read = readerPointer->position.mark;
 	return ISH_TRUE;
 }
