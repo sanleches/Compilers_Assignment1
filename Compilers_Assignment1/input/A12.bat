@@ -4,7 +4,7 @@
 :: ---------------------------------------------------------------------
 
 CLS
-SET COMPILER=Compiler.exe
+SET COMPILER=Compilers.exe
 
 SET FILE1=INPUT0_Empty
 SET FILE2=INPUT1_Hello
