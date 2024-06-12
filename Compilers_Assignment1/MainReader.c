@@ -177,7 +177,9 @@ ish_void startReader(ish_thread program, ish_thread input, ish_cha mode, ish_int
 	}
 
 	/* Open source file */
-	if ((fileHandler = fopen(input, "r")) == NULL) {
+	errno_t err;
+	err = fopen_s(&fileHandler, input, "r");
+	if (err != 0) {
 		bErrorPrint("%s%s%s", program, ": Cannot open file: ", input);
 		exit(EXIT_FAILURE);
 	}
@@ -249,8 +251,8 @@ ish_void bErrorPrint(ish_thread fmt, ...) {
 ish_long getFileSize(ish_thread fname) {
 	FILE* input;
 	ish_long flength;
-	input = fopen(fname, "r");
-	if (input == NULL) {
+	input = fopen_s(&input, fname, "r");
+	if (input != 0 || input == NULL) {
 		bErrorPrint("%s%s", "Cannot open file: ", fname);
 		return 0;
 	}
