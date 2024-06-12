@@ -42,8 +42,8 @@
 #ifndef COMPILERS_H_
 #define COMPILERS_H_
 
-#include "Reader.h"
-// Corrected typo from previous code review
+
+#include "Reader.h" // This should be before including any source files
 #include "Reader.c"
 #include "MainReader.c"
 
@@ -55,7 +55,7 @@
 
 // Logical constants
 #define ISH_TRUE  1
-#define ISH_FALSE 0 
+#define ISH_FALSE 0
 
 // Data type typedefs for Ish language
 

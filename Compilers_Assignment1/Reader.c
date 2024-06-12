@@ -46,7 +46,6 @@
  * - Review the functions to use "Defensive Programming".
  *.............................................................................
  */
-
 #ifndef COMPILERS_H_
 #include "Compilers.h"
 #endif
@@ -54,7 +53,6 @@
 #ifndef READER_H_
 #include "Reader.h"
 #endif
-
 /*
 ***********************************************************
 * Function name: readerCreate
@@ -156,14 +154,14 @@ BufferPointer readerAddChar(BufferPointer const readerPointer, ish_cha ch) {
 */
 ish_bool readerClear(BufferPointer const readerPointer) {
 	if (!readerPointer) {
-		return ISH_FALSE; // Defensive programming
+		return 0; // Defensive programming
 	}
 
 	readerPointer->position.wrte = 0;
 	readerPointer->position.mark = 0;
 	readerPointer->position.read = 0;
 	readerPointer->flags = FLAG_EMP; // Set the empty flag
-	return ISH_TRUE;
+	return 1;
 }
 
 /*
@@ -182,14 +180,14 @@ ish_bool readerClear(BufferPointer const readerPointer) {
 */
 ish_bool readerFree(BufferPointer const readerPointer) {
 	if (!readerPointer) {
-		return ISH_FALSE; // Defensive programming
+		return 0; // Defensive programming
 	}
 
 	if (readerPointer->content) {
 		free(readerPointer->content);
 	}
 	free(readerPointer);
-	return ISH_TRUE;
+	return 1;
 }
 
 /*
@@ -208,7 +206,7 @@ ish_bool readerFree(BufferPointer const readerPointer) {
 */
 ish_bool readerIsFull(BufferPointer const readerPointer) {
 	if (!readerPointer) {
-		return ISH_FALSE; // Defensive programming
+		return 0; // Defensive programming
 	}
 
 	return (readerPointer->position.wrte * sizeof(ish_cha) >= readerPointer->size);
@@ -231,7 +229,7 @@ ish_bool readerIsFull(BufferPointer const readerPointer) {
 */
 ish_bool readerIsEmpty(BufferPointer const readerPointer) {
 	if (!readerPointer) {
-		return ISH_FALSE; // Defensive programming
+		return 0; // Defensive programming
 	}
 
 	return (readerPointer->position.wrte == 0);
@@ -254,11 +252,11 @@ ish_bool readerIsEmpty(BufferPointer const readerPointer) {
 */
 ish_bool readerSetMark(BufferPointer const readerPointer, ish_intg mark) {
 	if (!readerPointer || mark < 0 || mark > readerPointer->position.wrte) {
-		return ISH_FALSE; // Defensive programming
+		return 0; // Defensive programming
 	}
 
 	readerPointer->position.mark = mark;
-	return ISH_TRUE;
+	return 1;
 }
 
 
@@ -345,11 +343,11 @@ ish_intg readerLoad(BufferPointer const readerPointer, FILE* const fileDescripto
 */
 ish_bool readerRecover(BufferPointer const readerPointer) {
 	if (!readerPointer) {
-		return ISH_FALSE; // Defensive programming
+		return 0; // Defensive programming
 	}
 
 	readerPointer->position.read = 0;
-	return ISH_TRUE;
+	return 1;
 }
 
 
@@ -369,11 +367,11 @@ ish_bool readerRecover(BufferPointer const readerPointer) {
 */
 ish_bool readerRetract(BufferPointer const readerPointer) {
 	if (!readerPointer || readerPointer->position.read <= 0) {
-		return ISH_FALSE; // Defensive programming
+		return 0; // Defensive programming
 	}
 
 	readerPointer->position.read--;
-	return ISH_TRUE;
+	return 1;
 }
 
 
@@ -393,11 +391,11 @@ ish_bool readerRetract(BufferPointer const readerPointer) {
 */
 ish_bool readerRestore(BufferPointer const readerPointer) {
 	if (!readerPointer) {
-		return ISH_FALSE; // Defensive programming
+		return 0; // Defensive programming
 	}
 
 	readerPointer->position.read = readerPointer->position.mark;
-	return ISH_TRUE;
+	return 1;
 }
 
 
@@ -623,7 +621,7 @@ ish_byte readerGetFlags(BufferPointer const readerPointer) {
 */
 ish_bool readerPrintStat(BufferPointer const readerPointer) {
 	if (!readerPointer) {
-		return ISH_FALSE; // Defensive programming
+		return 0; // Defensive programming
 	}
 
 	printf("Printing buffer statistics:\n");
@@ -633,7 +631,7 @@ ish_bool readerPrintStat(BufferPointer const readerPointer) {
 	printf("Size: %d\n", readerPointer->size);
 	printf("Increment: %d\n", readerPointer->increment);
 	printf("Mode: %d\n", readerPointer->mode);
-	return ISH_TRUE;
+	return 1;
 }
 
 /*
@@ -703,11 +701,11 @@ ish_void readerChecksum(BufferPointer readerPointer) {
 
 ish_bool readerRewind(BufferPointer const readerPointer) {
 	if (!readerPointer) {
-		return ISH_FALSE; // Defensive programming
+		return 0; // Defensive programming
 	}
 
 	readerPointer->position.read = 0;
-	return ISH_TRUE;
+	return 1;
 }
 
 /*
@@ -722,9 +720,9 @@ ish_bool readerRewind(BufferPointer const readerPointer) {
 */
 ish_bool readerReset(BufferPointer const readerPointer) {
 	if (!readerPointer) {
-		return ISH_FALSE; // Defensive programming
+		return 0; // Defensive programming
 	}
 
 	readerPointer->position.read = readerPointer->position.mark;
-	return ISH_TRUE;
+	return 1;
 }
