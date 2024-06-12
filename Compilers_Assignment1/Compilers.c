@@ -70,6 +70,7 @@ ish_intg main(int argc, char** argv) {
         printf("%s%c%s", "\n[Option '", PGM_READER, "': Starting READER .....]\n\n");
         mainReader(argc, argv);
         break;
+        /*
     case PGM_SCANNER:
         printf("%s%c%s", "\n[Option '", PGM_SCANNER, "': Starting SCANNER .....]\n\n");
         mainScanner(argc, argv);
@@ -78,6 +79,7 @@ ish_intg main(int argc, char** argv) {
         printf("%s%c%s", "\n[Option '", PGM_PARSER, "': Starting PARSER .....]\n\n");
         mainParser(argc, argv);
         break;
+        */
     default:
         printf("%s%c%s%c%s%c%s", "* OPTIONS:\n- [",
             PGM_READER, "] - Reader\n- [",
