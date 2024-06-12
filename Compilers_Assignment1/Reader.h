@@ -133,10 +133,10 @@ ish_intg		readerLoad(BufferPointer const, FILE* const);
 ish_bool		readerRecover(BufferPointer const);
 ish_bool		readerRetract(BufferPointer const);
 ish_bool		readerRestore(BufferPointer const);
-ish_void		readerChecksum(BufferPointer const);
+ish_void		readerChecksum(BufferPointer const);  // Corrected
 /* Getters */
-ish_cha		    readerGetChar(BufferPointer const);
-ish_thread	    readerGetContent(BufferPointer const, ish_intg);
+ish_cha		    readerGetChar(BufferPointer const);  // Corrected
+ish_thread	    readerGetContent(BufferPointer const, ish_intg);  // Corrected
 ish_intg		readerGetPosRead(BufferPointer const);
 ish_intg		readerGetPosWrte(BufferPointer const);
 ish_intg		readerGetPosMark(BufferPointer const);

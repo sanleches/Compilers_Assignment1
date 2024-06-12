@@ -42,12 +42,11 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "MainReader.c"
+#include "Reader.h"
 
 #ifndef COMPILERS_H_
 #include "Compilers.h"
-
-#include "MainReader.c"
-#include "Reader.h"
 
 #endif
 

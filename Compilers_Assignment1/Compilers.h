@@ -27,9 +27,6 @@
 		":::..::::..:::::..:........:::........::........::::........:..:::::..:..::::..::......::::\n"
 */
 
-
-
-
 /*
 ************************************************************
 * File name: Compilers.h
@@ -44,6 +41,10 @@
 
 #ifndef COMPILERS_H_
 #define COMPILERS_H_
+
+#include "Reader.h"
+#include "Reader.c"
+#include "MainReader.c"
 
 // Debug mode flag
 #define DEBUG 0
@@ -101,10 +102,6 @@ enum PROGRAMS {
 	PGM_PARSER = 'p'
 };
 
-// Function signatures
-ish_intg mainReader(ish_intg argc, ish_thread* argv);   // Main function for the Reader program
-ish_intg mainScanner(ish_intg argc, ish_thread* argv);  // Main function for the Scanner program
-ish_intg mainParser(ish_intg argc, ish_thread* argv);   // Main function for the Parser program
 
 // Function to print logo
 ish_void printLogo();
