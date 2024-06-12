@@ -45,6 +45,10 @@
 
 #ifndef COMPILERS_H_
 #include "Compilers.h"
+
+#include "MainReader.c"
+#include "Reader.h"
+
 #endif
 
 ish_intg main(int argc, char** argv) {

@@ -1,0 +1,17 @@
+﻿  Compilers.c
+C:\CET\Compilers\Compilers_Assignment1\Compilers_Assignment1\MainReader.c(254,8): warning C4047: '=': 'FILE *' differs in levels of indirection from 'errno_t'
+  (compiling source file 'Compilers.c')
+  
+  MainReader.c
+C:\CET\Compilers\Compilers_Assignment1\Compilers_Assignment1\MainReader.c(254,8): warning C4047: '=': 'FILE *' differs in levels of indirection from 'errno_t'
+  Reader.c
+  Generating Code...
+MainReader.obj : error LNK2005: bErrorPrint already defined in Compilers.obj
+MainReader.obj : error LNK2005: displayBuffer already defined in Compilers.obj
+MainReader.obj : error LNK2005: getFileSize already defined in Compilers.obj
+MainReader.obj : error LNK2005: isNumber already defined in Compilers.obj
+MainReader.obj : error LNK2005: mainReader already defined in Compilers.obj
+MainReader.obj : error LNK2005: startReader already defined in Compilers.obj
+Compilers.obj : error LNK2019: unresolved external symbol mainScanner referenced in function main
+Compilers.obj : error LNK2019: unresolved external symbol mainParser referenced in function main
+C:\CET\Compilers\Compilers_Assignment1\x64\Debug\Compilers_Assignment1.exe : fatal error LNK1120: 2 unresolved externals

@@ -87,11 +87,18 @@ typedef unsigned char   ish_byte;       // Byte data type
 #define ISH_LONINT_MIN  (-9223372036854775808LL)
 #define ISH_LONINT_MAX  9223372036854775807LL
 
-// Programs
+/*
+------------------------------------------------------------
+Programs:
+1: Reader - invokes MainReader code
+2: Scanner - invokes MainScanner code
+3: Parser - invokes MainParser code
+------------------------------------------------------------
+*/
 enum PROGRAMS {
-    PGM_READER = 'r',  // Reader program
-    PGM_SCANNER = 's',  // Scanner program
-    PGM_PARSER = 'p'   // Parser program
+	PGM_READER = 'r',
+	PGM_SCANNER = 's',
+	PGM_PARSER = 'p'
 };
 
 // Function signatures
