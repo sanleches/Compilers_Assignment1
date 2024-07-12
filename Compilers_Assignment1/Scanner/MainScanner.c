@@ -72,7 +72,7 @@
 #include "Scanner.h"
 #endif
 
- /*check for ANSI C compliancy */
+ /* check for ANSI C compliancy */
 #define ANSI_C 0
 #if defined(__STDC__)
 #undef ANSI_C
@@ -120,9 +120,9 @@ ish_intg mainScanner(ish_intg argc, ish_thread* argv) {
 	Token currentToken;				/* Token produced by the scanner */
 	ish_intg loadSize = 0;			/* The size of the file loaded in the buffer */
 
-	/* Check for correct arrguments - source file name */
+	/* Check for correct arguments - source file name */
 	if (argc <= 2) {
-		/* __DATE__, __TIME__, __LINE__, __FILE__ are predefined preprocessor macros*/
+		/* __DATE__, __TIME__, __LINE__, __FILE__ are predefined preprocessor macros */
 		printScannerError("Date: %s  Time: %s", __DATE__, __TIME__);
 		printScannerError("Runtime error at line %d in file %s", __LINE__, __FILE__);
 		printScannerError("%s%s", argv[0], ": Missing source file name.");
@@ -146,7 +146,7 @@ ish_intg mainScanner(ish_intg argc, ish_thread* argv) {
 		exit(EXIT_FAILURE);
 	}
 
-	/* Load source file into input buffer  */
+	/* Load source file into input buffer */
 	printf("Reading file %s ....Please wait\n", argv[2]);
 	loadSize = readerLoad(sourceBuffer, fileHandler);
 	if (loadSize == READER_ERROR)
@@ -174,7 +174,7 @@ ish_intg mainScanner(ish_intg argc, ish_thread* argv) {
 		exit(EXIT_FAILURE);
 	}
 
-	/* Testbed for the scanner and add SEOF to input program buffer*/
+	/* Testbed for the scanner and add SEOF to input program buffer */
 	/* Initialize scanner input buffer */
 	if (startScanner(sourceBuffer)) {
 		printScannerError("%s%s", argv[0], ": Empty program buffer - scanning canceled");
@@ -232,7 +232,7 @@ ish_void printScannerError(ish_string fmt, ...) {
  * Param:
  *		- Scanner to be displayed.
  ***********************************************************
- */
+*/
 
 ish_void displayScanner(BufferPointer ptrBuffer) {
 	printf("\nPrinting buffer parameters:\n\n");
@@ -244,14 +244,14 @@ ish_void displayScanner(BufferPointer ptrBuffer) {
 }
 
 /*
- ************************************************************
+************************************************************
  * The function gets size of scanner file
  * Param:
  *	- Filename
  * Return:
  *	- Size of the file
  ***********************************************************
- */
+*/
 
 ish_long getScannerFilesize(ish_string fname) {
 	FILE* fileInput;
