@@ -126,22 +126,22 @@ typedef union TokenAttribute {
 typedef struct idAttibutes {
 	ish_byte flags;			/* Flags information */
 	union {
-		sofia_intg intValue;				/* Integer value */
-		sofia_real floatValue;			/* Float value */
-		sofia_string stringContent;		/* String value */
+		ish_intg intValue;				/* Integer value */
+		ish_real floatValue;			/* Float value */
+		ish_thread stringContent;		/* String value */
 	} values;
 } IdAttibutes;
 
 /* Token declaration */
 typedef struct Token {
-	sofia_intg code;				/* token code */
+	ish_intg code;				/* token code */
 	TokenAttribute attribute;	/* token attribute */
 	IdAttibutes   idAttribute;	/* not used in this scanner implementation - for further use */
 } Token;
 
 /* Scanner */
 typedef struct scannerData {
-	sofia_intg scanHistogram[NUM_TOKENS];	/* Statistics of chars */
+	ish_intg scanHistogram[NUM_TOKENS];	/* Statistics of chars */
 } ScannerData, * pScanData;
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,7 +174,7 @@ typedef struct scannerData {
 #define CHAR_CLASSES	8
 
 /* TO_DO: Transition table - type of states defined in separate table */
-static sofia_intg transitionTable[NUM_STATES][CHAR_CLASSES] = {
+static ish_intg transitionTable[NUM_STATES][CHAR_CLASSES] = {
 /*    [A-z],[0-9],    _,    &,   \', SEOF,    #, other
 	   L(0), D(1), U(2), M(3), Q(4), E(5), C(6),  O(7) */
 	{     1, ESNR, ESNR, ESNR,    4, ESWR,	  6, ESNR},	// S0: NOAS
@@ -195,7 +195,7 @@ static sofia_intg transitionTable[NUM_STATES][CHAR_CLASSES] = {
 #define FSWR	2		/* accepting state with retract */
 
 /* TO_DO: Define list of acceptable states */
-static sofia_intg stateType[NUM_STATES] = {
+static ish_intg stateType[NUM_STATES] = {
 	NOFS, /* 00 */
 	NOFS, /* 01 */
 	FSNR, /* 02 (MID) - Methods */
@@ -215,11 +215,11 @@ TO_DO: Adjust your functions'definitions
 */
 
 /* Static (local) function  prototypes */
-sofia_intg			startScanner(BufferPointer psc_buf);
-static sofia_intg	nextClass(sofia_char c);					/* character class function */
-static sofia_intg	nextState(sofia_intg, sofia_char);		/* state machine function */
-sofia_void			printScannerData(ScannerData scData);
-Token				tokenizer(sofia_void);
+ish_intg			startScanner(BufferPointer psc_buf);
+static ish_intg	nextClass(ish_cha c);					/* character class function */
+static ish_intg	nextState(ish_intg, ish_cha);		/* state machine function */
+ish_void			printScannerData(ScannerData scData);
+Token				tokenizer(ish_void);
 
 /*
 -------------------------------------------------
@@ -228,15 +228,15 @@ Automata definitions
 */
 
 /* TO_DO: Pointer to function (of one char * argument) returning Token */
-typedef Token(*PTR_ACCFUN)(sofia_string lexeme);
+typedef Token(*PTR_ACCFUN)(ish_thread lexeme);
 
 /* Declare accepting states functions */
-Token funcSL	(sofia_string lexeme);
-Token funcIL	(sofia_string lexeme);
-Token funcID	(sofia_string lexeme);
-Token funcCMT   (sofia_string lexeme);
-Token funcKEY	(sofia_string lexeme);
-Token funcErr	(sofia_string lexeme);
+Token funcSL	(ish_thread lexeme);
+Token funcIL	(ish_thread lexeme);
+Token funcID	(ish_thread lexeme);
+Token funcCMT   (ish_thread lexeme);
+Token funcKEY	(ish_thread lexeme);
+Token funcErr	(ish_thread lexeme);
 
 /* 
  * Accepting function (action) callback table (array) definition 
@@ -267,7 +267,7 @@ Language keywords
 #define KWT_SIZE 10
 
 /* TO_DO: Define the list of keywords */
-static sofia_string keywordTable[KWT_SIZE] = {
+static ish_thread keywordTable[KWT_SIZE] = {
 	"data",		/* KW00 */
 	"code",		/* KW01 */
 	"int",		/* KW02 */
@@ -290,13 +290,13 @@ static sofia_string keywordTable[KWT_SIZE] = {
 
 /* TO_DO: Should be used if no symbol table is implemented */
 typedef struct languageAttributes {
-	sofia_char indentationCharType;
-	sofia_intg indentationCurrentPos;
+	ish_cha indentationCharType;
+	ish_thread indentationCurrentPos;
 	/* TO_DO: Include any extra attribute to be used in your scanner (OPTIONAL and FREE) */
 } LanguageAttributes;
 
 /* Number of errors */
-sofia_intg numScannerErrors;
+ish_thread numScannerErrors;
 
 /* Scanner data */
 ScannerData scData;
