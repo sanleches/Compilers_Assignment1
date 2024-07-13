@@ -1,5 +1,7 @@
 ﻿  Compilers.c
   MainReader.c
   Reader.c
+  MainScanner.c
+  Scanner.c
   Generating Code...
   Compilers_Assignment1.vcxproj -> C:\CET\Compilers\Compilers_Assignment1\x64\Debug\Compilers_Assignment1.exe

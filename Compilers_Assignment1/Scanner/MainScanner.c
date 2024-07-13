@@ -98,9 +98,9 @@ extern Token tokenizer(ish_void);
  *  Function declarations
  * -------------------------------------------------------------
  */
-ish_void printScannerError(ish_string fmt, ...);
+ish_void printScannerError(ish_thread fmt, ...);
 ish_void displayScanner(BufferPointer ptrBuffer);
-ish_long getScannerFilesize(ish_string fname);
+ish_long getScannerFilesize(ish_thread fname);
 ish_void printToken(Token t);
 
 /*
@@ -216,7 +216,7 @@ ish_intg mainScanner(ish_intg argc, ish_thread* argv) {
 ***********************************************************
 */
 
-ish_void printScannerError(ish_string fmt, ...) {
+ish_void printScannerError(ish_thread fmt, ...) {
 	va_list ap;
 	va_start(ap, fmt);
 	(void)vfprintf(stderr, fmt, ap);
@@ -253,7 +253,7 @@ ish_void displayScanner(BufferPointer ptrBuffer) {
  ***********************************************************
 */
 
-ish_long getScannerFilesize(ish_string fname) {
+ish_long getScannerFilesize(ish_thread fname) {
 	FILE* fileInput;
 	ish_long fileLength;
 	fileInput = fopen(fname, "r");

@@ -130,10 +130,23 @@
     <ClCompile Include="Compilers.c" />
     <ClCompile Include="MainReader.c" />
     <ClCompile Include="Reader.c" />
+    <ClCompile Include="Scanner\MainScanner.c" />
+    <ClCompile Include="Scanner\Scanner.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Compilers.h" />
     <ClInclude Include="Reader.h" />
+    <ClInclude Include="Scanner\Scanner.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="input\A22.bat" />
+    <None Include="input\INPUT0_Empty.sof" />
+    <None Include="input\INPUT1_Hello.sof" />
+    <None Include="input\INPUT2_Volume.sof" />
+    <None Include="input\INPUT3_Factorial.sof" />
+    <None Include="input\INPUT4_Datatypes.sof" />
+    <None Include="input\INPUT5_General.sof" />
+    <None Include="input\INPUT6_Error.sof" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

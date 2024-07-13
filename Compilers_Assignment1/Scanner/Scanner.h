@@ -39,11 +39,11 @@
 *************************************************************/
 
 #ifndef COMPILERS_H_
-#include "Compilers.h"
+#include "../Compilers.h"
 #endif
 
 #ifndef READER_H_
-#include "Reader.h"
+#include "../Reader.h"
 #endif
 
 #ifndef SCANNER_H_

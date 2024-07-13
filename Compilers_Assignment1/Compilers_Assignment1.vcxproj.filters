@@ -24,6 +24,12 @@
     <ClCompile Include="Reader.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Scanner\MainScanner.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Scanner\Scanner.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Compilers.h">
@@ -32,5 +38,20 @@
     <ClInclude Include="Reader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scanner\Scanner.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="input\A22.bat">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="input\INPUT0_Empty.sof" />
+    <None Include="input\INPUT1_Hello.sof" />
+    <None Include="input\INPUT2_Volume.sof" />
+    <None Include="input\INPUT3_Factorial.sof" />
+    <None Include="input\INPUT4_Datatypes.sof" />
+    <None Include="input\INPUT5_General.sof" />
+    <None Include="input\INPUT6_Error.sof" />
   </ItemGroup>
 </Project>
